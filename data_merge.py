@@ -11,19 +11,36 @@ lon_list = []
 lat_list = []
 geolocator = Nominatim(user_agent="county_lookup")
 
-conties_list = get_unique_counties_list()
-for county in conties_list:
+counties_list = get_unique_counties_list()
+lon_lat_county_dict = {}
+for county in counties_list:
       county = county + " County, Texas, USA"
       location = geolocator.geocode(county)
       location.latitude, location.longitude
       lon_list.append(location.longitude)
       lat_list.append(location.latitude)
+      lon_lat_county_dict[(location.latitude, location.longitude)] = county
 
 #%%
-start_date = "2015-01-01"
-end_date = "2025-09-30"
+from everything_data import pull_weather_data
+from importlib import reload
+reload(pull_weather_data)
 
-weather_data_dict = get_weather_data(lat_list, lon_list, start_date, end_date)
+start_date = "2021-01-01"
+end_date = "2026-05-31"
+
+
+data_list = []
+step = 5
+for i in range(0, len(lat_list), step):
+      lat_subset = lat_list[i:i+step]
+      lon_subset = lon_list[i:i+step]
+      weather_data_dict = pull_weather_data.get_weather_data(lat_subset, lon_subset, start_date, end_date)
+      # replace lat and lon with county name for weather_data_dict
+
+      sub_counties_list = counties_list[i:i+step]
+      for k,value in enumerate(weather_data_dict.values()):
+            value.to_pickle(f"TX_{sub_counties_list[k]}_weather_data.pkl")
+
 
 #%%
-

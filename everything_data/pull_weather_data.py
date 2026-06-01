@@ -127,7 +127,6 @@ def get_weather_data(latitude_list, longitude_list, start_date, end_date):
 		hourly_data["total_column_integrated_water_vapour"] = hourly_total_column_integrated_water_vapour
 		hourly_data["snow_depth_water_equivalent"] = hourly_snow_depth_water_equivalent
 		hourly_data["albedo"] = hourly_albedo
-		hourly_data["is_day"] = hourly_is_day
 		hourly_data["sunshine_duration"] = hourly_sunshine_duration
 		hourly_data["shortwave_radiation"] = hourly_shortwave_radiation
 		hourly_data["direct_radiation"] = hourly_direct_radiation
